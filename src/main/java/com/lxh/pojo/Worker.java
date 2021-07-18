@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * 工作者实体类
  * @author LXH
+ * @date 2021/7/18 9:00
  */
 @Data
 @AllArgsConstructor

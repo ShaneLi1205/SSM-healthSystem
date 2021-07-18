@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 /**
+ * 聊天信息实体类
  * @author LXH
+ * @date 2021/7/18 9:00
  */
 @Data
 @AllArgsConstructor

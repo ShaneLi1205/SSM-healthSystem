@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxh.dao.ArticleMapper">
+
+    <!---->
+    <select id="listAllArticle" parameterType="int" resultType="articleInfo">
+        SELECT article_id,article_info.`worker_id`,article_title,article_view_num,article_like_num,article_release_time,article_info.`article_class_id`,article_comment_num,article_content,article_summary,worker_name ,article_class_name
+                FROM article_info
+                INNER JOIN h_worker ON article_info.`worker_id` = h_worker.`worker_id`
+                INNER JOIN article_class ON article_info.`article_class_id` = article_class.`article_class_id`
+                ORDER BY article_id DESC
+                LIMIT #{pageNum},15
+    </select>
+    <!---->
+    <select id="listArticleByClass" parameterType="map" resultType="articleInfo">
+        SELECT article_id,article_info.`worker_id`,article_title,article_view_num,article_like_num,
+                article_release_time,article_class_id,article_comment_num,article_summary,worker_name
+        FROM article_info
+            INNER JOIN h_worker
+                ON article_info.`worker_id` = h_worker.`worker_id`
+        WHERE article_class_id = ?
+        LIMIT ?,15
+    </select>
+    <!---->
+    <select id="listArticleComment" parameterType="map" resultType="articleComment">
+        SELECT article_comment_id,article_id,article_comment_content,h_user.`user_id`,user_name,article_comment_time
+        FROM article_comment
+            INNER JOIN h_user
+                ON h_user.`user_id` = article_comment.`user_id`
+        WHERE article_id = #{articleId}
+        LIMIT #{pageNum},15
+    </select>
+    <!---->
+    <select id="listCommentReplies" parameterType="int" resultType="commentReply">
+        SELECT comment_reply_id,comment_reply_content,comment_reply.`article_comment_id`,user_name
+         FROM comment_reply
+         INNER JOIN article_comment ON comment_reply.`article_comment_id` = article_comment.`article_comment_id`
+         INNER JOIN h_user ON h_user.`user_id` = comment_reply.`user_id`
+         WHERE comment_reply.`article_comment_id` = #{articleCommentId}
+    </select>
+    <!---->
+    <insert id="saveNewArticleInfo" parameterType="articleInfo">
+        INSERT INTO article_info VALUES(null,#{workerId},#{articleTitle},0,0,0,#{articleReleaseTime},#{articleClassId},#{articleContent},#{articleSummary})
+    </insert>
+    <!---->
+    <insert id="saveNewArticleLike" parameterType="map">
+        INSERT INTO article_like VALUES (null,#{articleId},#{userId})
+    </insert>
+    <!---->
+    <delete id="deleteArticleLike" parameterType="map">
+        DELETE FROM article_like WHERE article_id = #{articleId} AND user_id = #{userId}
+    </delete>
+    <!---->
+    <update id="saveArticleLikeInfo" parameterType="int">
+        UPDATE article_info SET article_like_num = article_like_num + 1 WHERE article_id = #{articleId}
+    </update>
+    <!---->
+    <delete id="deleteArticleLikeInfo" parameterType="int">
+        UPDATE article_info SET article_like_num = article_like_num - 1 WHERE article_id = #{articleId}
+    </delete>
+    <!---->
+    <insert id="saveNewComment" parameterType="articleComment">
+        INSERT INTO article_comment VALUES(null,#{articleId},#{articleCommentContent},#{userId},#{workerId},#{articleCommentTime})
+    </insert>
+    <!---->
+    <update id="saveNewCommentNum" parameterType="int">
+        UPDATE article_info set article_view_num = article_view_num + 1 WHERE article_id = #{articleId}
+    </update>
+    <!---->
+    <select id="getArticleFavoritesNumByArticleId" parameterType="int" resultType="int">
+        SELECT COUNT(user_favorites_id) num FROM user_favorites WHERE article_id = #{articleId}
+    </select>
+    <!---->
+    <select id="listAllArticleClass" resultType="articleClass">
+        SELECT article_class.`article_class_id`,article_class_name,
+               COALESCE(SUM(article_view_num),0)article_class_view,
+               COALESCE(COUNT(article_info.`article_id`),0)article_class_num
+        FROM article_class
+            LEFT JOIN article_info
+                ON article_class.`article_class_id` = article_info.`article_class_id`
+        GROUP BY article_class.`article_class_id`
+    </select>
+    <!---->
+    <select id="getTotalPageNum" resultType="int" >
+        SELECT count(article_id) totalNum FROM article_info
+        <where>
+            <if test="articleId != 0">
+                article_class_id = #{articleId}
+            </if>
+        </where>
+    </select>
+    <!---->
+    <select id="getArticleById" parameterType="int" resultType="articleInfo">
+        SELECT article_id,article_info.`worker_id`,article_title,article_view_num,article_like_num, article_release_time,article_info.`article_class_id`,article_comment_num,article_content,article_summary,worker_name,article_class_name
+        FROM article_info
+        INNER JOIN h_worker ON article_info.`worker_id` = h_worker.`worker_id`
+        INNER JOIN article_class ON article_class.`article_class_id` = article_info.`article_class_id`
+        WHERE article_id = #{articleId}
+    </select>
+    <!---->
+    <select id="getArticleCommentNumById" parameterType="int" resultType="int">
+        SELECT COUNT(article_comment_id) totalNum FROM article_comment
+    </select>
+    <!---->
+    <select id="listArticleByKeyword" parameterType="String" resultType="articleInfo">
+        SELECT article_id,article_info.`worker_id`,article_title,article_view_num,article_like_num,
+                article_release_time,article_class_id,article_comment_num,article_content,article_summary,worker_name
+            FROM article_info
+                INNER JOIN h_worker
+                    ON article_info.`worker_id` = h_worker.`worker_id`
+        WHERE article_title LIKE concat('%',#{keyword},'%')
+        LIMIT #{pageNum},15
+    </select>
+    <!---->
+    <select id="getTotalPageNumInSearch" parameterType="String" resultType="int">
+        SELECT count(article_id) totalNum
+        FROM article_info
+        WHERE article_title
+                  LIKE concat('%',#{keyword},'%')
+    </select>
+    <!---->
+    <select id="getArticleLike" parameterType="map" resultType="articleLike">
+        SELECT article_like_id FROM article_like WHERE article_id = #{articleId} AND user_id = #{userId}
+    </select>
+    <!---->
+    <delete id="deleteArticle" parameterType="int">
+        DELETE FROM article_info WHERE article_id = #{articleId}
+    </delete>
+    <!---->
+    <delete id="deleteArticleFavorites" parameterType="int">
+        DELETE FROM user_favorites WHERE article_id = #{articleId}
+    </delete>
+    <!---->
+    <delete id="deleteArticleLikes" parameterType="int">
+        DELETE FROM article_like WHERE article_id = #{articleId}
+    </delete>
+    <!---->
+    <delete id="deleteArticleComment" parameterType="int">
+        DELETE article_comment,comment_reply
+        FROM comment_reply
+                 LEFT JOIN article_comment
+                           ON comment_reply.`article_comment_id` = article_comment.`article_comment_id`
+        WHERE article_comment.`article_id` = #{articleId}
+    </delete>
+    <!---->
+    <insert id="saveNewArticleClass" parameterType="String">
+        INSERT INTO article_class VALUES (null,#{articleClassName})
+    </insert>
+    <!---->
+    <delete id="deleteArticleClass" parameterType="int">
+        DELETE FROM article_class WHERE article_class_id = #{aricleClassId}
+    </delete>
+    <!---->
+    <update id="updateArticleClass" parameterType="map">
+        UPDATE article_info SET article_class_id = #{updateClassId} WHERE article_class_id = #{originalClassid}
+    </update>
+    <!---->
+    <select id="checkArticleClassName" parameterType="String" resultType="articleClass">
+        SELECT * FROM article_class WHERE article_class_name = #{articleClassName}
+    </select>
+    <!---->
+<!--    <resultMap id="commentGetReply" type="articleComment">-->
+<!--        <result property="articleClassId" column="article_comment_id"/>-->
+<!--        <result property="articleId" column="article_id"/>-->
+<!--        <result property="userId" column="user_id"/>-->
+<!--        <result property="articleCommentContent" column="articleCommentContent"/>-->
+<!--        <result property="userName" column="user_name"/>-->
+<!--        <collection property="commentReplies" ofType="commentReply">-->
+<!--            <result property="commentReplyId" column="comment_reply_id"/>-->
+<!--            <result property="commentReplyContent" column="comment_reply_content"/>-->
+<!--        </collection>-->
+
+<!--    </resultMap>-->
+<!--    <select id="listCommentReply" parameterType="articleId" resultType="articleComment">-->
+<!--        SELECT-->
+<!--            article_comment.`article_comment_id` article_comment_id,-->
+<!--            article_id,-->
+<!--            article_comment_content,-->
+<!--            h_user.`user_id` user_id,-->
+<!--            h_user.`user_name` user_name,-->
+<!--            article_comment_time ,-->
+<!--            comment_reply_id,-->
+<!--            comment_reply_content-->
+<!--        FROM article_comment-->
+<!--                 INNER JOIN comment_reply-->
+<!--                            ON article_comment.`article_comment_id`=comment_reply.`article_comment_id`-->
+<!--                 INNER JOIN h_user-->
+<!--                            ON h_user.`user_id` = article_comment.`user_id`-->
+<!--                                AND h_user.`user_id` = comment_reply.`user_id`-->
+<!--        WHERE article_id = #{articleId}-->
+<!--        Limit #{pageNum},15-->
+<!--    </select>-->
+    <!---->
+    <insert id="saveCommentReply" parameterType="commentReply">
+        INSERT INTO comment_reply VALUES(null,#{articleCommentId},#{commentReplyContent},#{userId},null)
+    </insert>
+    <!---->
+    <delete id="deleteCommentByCommentId" parameterType="int">
+        DELETE FROM article_comment WHERE article_comment_id = #{articleCommentId}
+    </delete>
+    <!---->
+    <delete id="deleteCommentReplyByCommentId" parameterType="int">
+        DELETE FROM comment_reply WHERE article_comment_id = #{articleCommentId}
+    </delete>
+    <!---->
+    <delete id="deleteReplyByReplyId" parameterType="int">
+        DELETE FROM comment_reply WHERE comment_reply_id = #{replyId}
+    </delete>
+</mapper>

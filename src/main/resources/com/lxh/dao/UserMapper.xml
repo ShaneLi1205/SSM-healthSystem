@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxh.dao.UserMapper">
+    <select id="listAllUser" resultType="user">
+        select user_id,user_name from h_user
+    </select>
+    <select id="listAllUserNameAndId" resultType="user">
+        select user_id,user_name from h_user
+    </select>
+    <insert id="saveNewUser" parameterType="user">
+        INSERT INTO h_user VALUES(null,#{userAccount},md5(#{userPassword}),#{userName},#{userSex},#{userRegisterTime})
+    </insert>
+    <select id="getUserAccount" parameterType="String">
+        select user_id from h_user where user_account = #{checkAccount}
+    </select>
+    <select id="getUserName" parameterType="String">
+        select user_id from h_user where user_name = #{checkName}
+    </select>
+    <insert id="saveUserFavorites" parameterType="map">
+        insert into user_favorites values (null,#{userId},#{articleId})
+    </insert>
+    <select id="listUserFavorites" parameterType="int" resultType="userFavorites">
+        select user_favorites_id,user_id,article_id
+        from user_favorites
+        where user_id = #{userId}
+    </select>
+    <delete id="deleteUserFavorites" parameterType="map">
+        delete from user_favorites
+        where article_id = #{articleId} and user_id = #{userId}
+    </delete>
+    <select id="getUserIsFavourites" parameterType="map" resultType="userFavorites">
+        select user_id,article_id,user_favorites_id
+        from user_favorites
+        where user_id = #{userId} and article_id = #{articleId}
+    </select>
+</mapper>

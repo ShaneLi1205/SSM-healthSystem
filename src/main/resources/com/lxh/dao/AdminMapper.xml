@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxh.dao.AdminMapper">
+    <select id="getAdmin" parameterType="admin" resultType="admin">
+        select admin_id,admin_name
+        from h_admin
+        where  admin_account = #{adminAccount}
+          and admin_password = md5(#{adminPassword})
+    </select>
+    <select id="getAdminAccount" parameterType="String" resultType="admin">
+        select admin_id
+        from h_admin
+        where  admin_account = #{checkAccount}
+    </select>
+    <select id="getAdminName" parameterType="String" resultType="admin">
+        select admin_id
+        from h_admin
+        where  admin_name = #{checkName}
+    </select>
+</mapper>

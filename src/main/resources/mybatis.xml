@@ -11,6 +11,6 @@
         <package name="com.lxh.pojo"/>
     </typeAliases>
     <mappers>
-        <mapper class="com.lxh.dao.ArticleClassMapper"/>
+        <package name="com.lxh.dao"/>
     </mappers>
 </configuration>

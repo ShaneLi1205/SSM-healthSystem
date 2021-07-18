@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxh.dao.WorkerMapper">
+    <insert id="saveNewWorker" parameterType="worker" >
+        INSERT INTO h_worker
+        VALUES (null,#{workerAccount},md5(#{workerPassword}),#{workerName},#{workerSex},#{workerBanTime},null)
+    </insert>
+    <select id="listAllWorkerNameAndId" parameterType="worker" resultType="worker">
+        select worker_id,worker_name from h_worker
+    </select>
+    <select id="getWorker" parameterType="worker" resultType="worker">
+        select worker_id,worker_name,worker_ban_time
+        from h_worker
+        where worker_account = #{workerAccount}
+          and worker_password = md5(#{workerAccount})
+    </select>
+    <select id="getWorkerAccount" parameterType="String" resultType="worker">
+        select worker_id from h_worker where worker_account = #{checkAccount}
+    </select>
+    <select id="getWorkerName" parameterType="String" resultType="worker">
+        select worker_id from h_worker where worker_name = #{checkName}
+    </select>
+    <select id="getWorkerBanTime" parameterType="int" resultType="worker">
+        select worker_id,worker_ban_time from h_worker where worker_id = #{workerId}
+    </select>
+    <update id="saveWorkerBanTime" parameterType="String">
+        update h_worker set worker_ban_time = #{workerBanTime} where worker_id = #{workerId}
+    </update>
+</mapper>

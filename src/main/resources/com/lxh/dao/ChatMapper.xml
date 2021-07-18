@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxh.dao.ChatMapper">
+    <!--选择指定双方所有聊天信息，无特殊条件-->
+    <sql id="listChatDataBase">
+        SELECT chat_id,chat_data.`user_id`,user_name,chat_data.`worker_id`,worker_name,chat_content,chat_time,chat_sender,chat_read
+        FROM (chat_data INNER JOIN h_user ON chat_data.`user_id`= h_user.`user_id` )
+        INNER JOIN h_worker ON chat_data.`worker_id` = h_worker.`worker_id`
+        WHERE chat_data.`user_id` = #{userId} AND chat_data.`worker_id`= #{workerId}
+    </sql>
+
+    <!--标记信息未已读，未指定读方-->
+    <sql id="saveChatDataReadBase">
+        UPDATE chat_data SET chat_read = 1
+        WHERE chat_data.`user_id` = #{userId}
+          AND chat_data.`worker_id`= #{workerId}
+          AND chat_read = 0
+    </sql>
+
+    <!--获得指定双方所有聊天信息-->
+    <select id="listChatData" parameterType="map" resultType="chatData">
+        <include refid="listChatDataBase"></include>
+    </select>
+
+    <!--获得新的聊天信息，需要参数指定获得方-->
+    <select id="listNewChatData" parameterType="map" resultType="chatData">
+        SELECT chat_id,chat_data.`user_id`,user_name,chat_data.`worker_id`,worker_name,chat_content,chat_time,chat_sender,chat_read
+        FROM (chat_data INNER JOIN h_user ON chat_data.`user_id`= h_user.`user_id` )
+        INNER JOIN h_worker ON chat_data.`worker_id` = h_worker.`worker_id`
+        WHERE chat_data.`user_id` = #{userId}
+            AND chat_data.`worker_id`= #{workerId}
+            AND chat_data.`chat_sender` = #{chatSender}
+    </select>
+
+    <select id="listNewChatDataByUser" parameterType="map" resultType="chatData">
+        <include refid="listChatDataBase"></include>
+        AND chat_sender = 1 AND chat_read = 0
+    </select>
+
+    <select id="listNewChatDataByWorker" parameterType="map" resultType="chatData">
+        <include refid="listChatDataBase"></include>
+        AND chat_sender = 0 AND chat_read = 0
+    </select>
+
+    <update id="saveChatDataReadByUser" parameterType="map">
+        <include refid="saveChatDataReadBase"></include>
+        AND chat_sender = 1
+    </update>
+
+    <update id="saveChatDataReadByWorker" parameterType="map">
+        <include refid="saveChatDataReadBase"></include>
+        AND chat_sender = 0
+    </update>
+
+    <!--发送聊天信息，需要参数指定发送方-->
+    <insert id="saveNewChatData" parameterType="chatData">
+        INSERT INTO chat_data VALUES(null,#{userId},#{workerId},#{chatContent},#{chatSender},0,now())
+    </insert>
+    <insert id="saveNewUserChatData" parameterType="chatData">
+        INSERT INTO chat_data VALUES(null,#{userId},#{workerId},#{chatContent},0,0,now())
+    </insert>
+
+    <insert id="saveNewWorkerChatData" parameterType="chatData">
+        INSERT INTO chat_data VALUES(null,#{userId},#{workerId},#{chatContent},1,0,now())
+    </insert>
+
+    <select id="listChatRelation" parameterType="map">
+        SELECT DISTINCT chat_data.`user_id`,chat_data.`worker_id`,worker_name,user_name
+        FROM (chat_data INNER JOIN h_user ON chat_data.`user_id`= h_user.`user_id` )
+        INNER JOIN h_worker ON chat_data.`worker_id` = h_worker.`worker_id`
+        <where>
+            <choose>
+                <when test="userId != 0">
+                    chat_data.`user_id` = #{userId}
+                </when>
+                <otherwise>
+                    chat_data.`worker_id` = #{workerId}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

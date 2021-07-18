@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 文章分类信息实体类
  * @Author: LXH
  * @Date: 2021/7/17 23:12
  */
