@@ -3,7 +3,7 @@ package com.lxh.service.impl;
 import com.lxh.dao.WorkerMapper;
 import com.lxh.pojo.Worker;
 import com.lxh.service.WorkerService;
-import com.lxh.utils.Constant;
+import com.lxh.bean.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

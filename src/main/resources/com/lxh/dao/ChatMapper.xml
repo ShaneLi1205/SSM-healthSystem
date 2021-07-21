@@ -33,6 +33,7 @@
         WHERE chat_data.`user_id` = #{userId}
             AND chat_data.`worker_id`= #{workerId}
             AND chat_data.`chat_sender` = #{chatSender}
+            AND chat_data.chat_read = 0
     </select>
 
     <select id="listNewChatDataByUser" parameterType="map" resultType="chatData">
@@ -45,12 +46,20 @@
         AND chat_sender = 0 AND chat_read = 0
     </select>
 
-    <update id="saveChatDataReadByUser" parameterType="map">
+    <update id="updateChatDataRead" parameterType="map">
+        UPDATE chat_data SET chat_read = 1
+        WHERE chat_data.`user_id` = #{userId}
+          AND chat_data.`worker_id`= #{workerId}
+          AND chat_data.`chat_sender` = #{chatSender}
+          AND chat_data.chat_read = 0
+    </update>
+
+    <update id="updateChatDataReadByUser" parameterType="map">
         <include refid="saveChatDataReadBase"></include>
         AND chat_sender = 1
     </update>
 
-    <update id="saveChatDataReadByWorker" parameterType="map">
+    <update id="updateChatDataReadByWorker" parameterType="map">
         <include refid="saveChatDataReadBase"></include>
         AND chat_sender = 0
     </update>
@@ -67,13 +76,13 @@
         INSERT INTO chat_data VALUES(null,#{userId},#{workerId},#{chatContent},1,0,now())
     </insert>
 
-    <select id="listChatRelation" parameterType="map">
+    <select id="listChatRelation" parameterType="map" resultType="chatData">
         SELECT DISTINCT chat_data.`user_id`,chat_data.`worker_id`,worker_name,user_name
         FROM (chat_data INNER JOIN h_user ON chat_data.`user_id`= h_user.`user_id` )
         INNER JOIN h_worker ON chat_data.`worker_id` = h_worker.`worker_id`
         <where>
             <choose>
-                <when test="userId != 0">
+                <when test="userId != null">
                     chat_data.`user_id` = #{userId}
                 </when>
                 <otherwise>

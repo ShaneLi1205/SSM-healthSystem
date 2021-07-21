@@ -2,7 +2,7 @@ package com.lxh.serviceTest;
 
 import com.lxh.pojo.User;
 import com.lxh.service.UserService;
-import com.lxh.utils.Constant;
+import com.lxh.bean.Constant;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -39,5 +39,9 @@ public class UserServiceTest {
         map.put(Constant.USER_ID,1);
         map.put(Constant.ARTICLE_ID,2);
         System.out.println(userServiceImpl.getUserIsFavourites(map));
+    }
+    @Test
+    public void checkUser(){
+        System.out.println(userServiceImpl.checkUserAccountAndName("17255654","黎木木"));
     }
 }

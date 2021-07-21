@@ -2,6 +2,9 @@ package com.lxh.service;
 
 import com.lxh.pojo.Report;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -10,6 +13,8 @@ import java.util.ArrayList;
  * @Date: 2021/7/18 11:08
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, timeout = 1000, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+
 public interface ReportService {
     /**
      * 获得所有举报信息

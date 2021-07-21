@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 验证用户的账号或用户名
+     *
+     * @param account  需要验证的账号
+     * @param username 需要验证的用户名
+     * @return 用户信息
+     */
+    @Override
+    public boolean checkUserAccountAndName(String account, String username) {
+        return userMapper.checkUserAccountAndName(account, username) == null;
+    }
+
+    /**
      * 用户账号验证
      *
      * @param checkAccount 需要验证的账号
@@ -111,7 +123,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ArrayList<UserFavorites> listUserFavorites(int userId) {
-        return listUserFavorites(userId);
+        return userMapper.listUserFavorites(userId);
     }
 
     /**

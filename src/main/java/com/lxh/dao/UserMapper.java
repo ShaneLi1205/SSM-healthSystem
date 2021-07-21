@@ -2,6 +2,7 @@ package com.lxh.dao;
 
 import com.lxh.pojo.User;
 import com.lxh.pojo.UserFavorites;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,6 +37,13 @@ public interface UserMapper {
      */
     User getUser(User user);
 
+    /**
+     * 验证用户的账号或用户名
+     * @param account 需要验证的账号
+     * @param username  需要验证的用户名
+     * @return 用户信息
+     */
+    User checkUserAccountAndName(@Param("account") String account,@Param("username") String username);
     /**
      * 用户账号验证
      * @param checkAccount 需要验证的账号

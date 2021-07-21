@@ -3,6 +3,9 @@ package com.lxh.service;
 import com.lxh.pojo.User;
 import com.lxh.pojo.UserFavorites;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,6 +15,7 @@ import java.util.Map;
  * @Date: 2021/7/18 10:15
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, timeout = 1000, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 public interface UserService {
     /**
      * 获得所有用户的信息
@@ -37,6 +41,14 @@ public interface UserService {
      * @return 登录的用户信息
      */
     User getUser(User user);
+
+    /**
+     * 验证用户的账号或用户名
+     * @param account 需要验证的账号
+     * @param username  需要验证的用户名
+     * @return 用户信息
+     */
+    boolean checkUserAccountAndName(String account,String username);
 
     /**
      * 用户账号验证

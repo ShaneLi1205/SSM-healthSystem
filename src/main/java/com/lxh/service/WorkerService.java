@@ -2,6 +2,9 @@ package com.lxh.service;
 
 import com.lxh.pojo.Worker;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +14,8 @@ import java.util.Map;
  * @Date: 2021/7/18 10:16
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, timeout = 1000, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+
 public interface WorkerService {
     /**
      * 新工作者注册

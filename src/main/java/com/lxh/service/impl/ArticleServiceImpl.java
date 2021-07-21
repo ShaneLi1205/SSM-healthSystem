@@ -6,7 +6,7 @@ import com.lxh.pojo.ArticleComment;
 import com.lxh.pojo.ArticleInfo;
 import com.lxh.pojo.CommentReply;
 import com.lxh.service.ArticleService;
-import com.lxh.utils.Constant;
+import com.lxh.bean.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -91,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public ArrayList<ArticleComment> listArticleComment(Map<String, Integer> map) {
-        int pageNum = (map.get(Constant.PAGE_NUM)-1)*Constant.RECORD_IN_SINGLE_PAGE;
+        int pageNum = (map.get(Constant.COMMENT_CURRENT_PAGE_NUM)-1)*Constant.RECORD_IN_SINGLE_PAGE;
         map.put(Constant.PAGE_NUM,pageNum);
         ArrayList<ArticleComment> articleComments = articleMapper.listArticleComment(map);
         for (ArticleComment articleComment : articleComments) {
@@ -308,7 +308,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 获得文章的评论及回复
-     *
+     * 暂时不使用
      * @param map 保存参数
      *            articleId 文章Id
      *            pageNum 页码
@@ -316,6 +316,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public ArrayList<ArticleComment> listCommentReply(Map<String, Integer> map) {
+        System.out.println("调错方法啦");
         return null;
     }
 

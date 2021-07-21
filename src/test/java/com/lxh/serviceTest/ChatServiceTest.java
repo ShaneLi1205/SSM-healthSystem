@@ -2,7 +2,7 @@ package com.lxh.serviceTest;
 
 import com.lxh.pojo.ChatData;
 import com.lxh.service.ChatService;
-import com.lxh.utils.Constant;
+import com.lxh.bean.Constant;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

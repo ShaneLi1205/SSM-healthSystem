@@ -21,8 +21,8 @@
         FROM article_info
             INNER JOIN h_worker
                 ON article_info.`worker_id` = h_worker.`worker_id`
-        WHERE article_class_id = ?
-        LIMIT ?,15
+        WHERE article_class_id = #{articleClassId}
+        LIMIT #{pageNum},15
     </select>
     <!---->
     <select id="listArticleComment" parameterType="map" resultType="articleComment">

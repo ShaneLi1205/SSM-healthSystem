@@ -2,12 +2,17 @@ package com.lxh.service;
 
 import com.lxh.pojo.Admin;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: LXH
  * @Date: 2021/7/18 9:26
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, timeout = 1000, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+
 public interface AdminService {
     /**
      * 管理员登录验证

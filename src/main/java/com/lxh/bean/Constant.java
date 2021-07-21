@@ -1,4 +1,4 @@
-package com.lxh.utils;
+package com.lxh.bean;
 
 /**
  * @Author: LXH
@@ -51,4 +51,7 @@ public class Constant {
     public static final String PAGE_NUM = "pageNum";
     public static final String ERROR_PAGE = "/LiXianghao_event_war_exploded/error.jsp";
     public static final int RECORD_IN_SINGLE_PAGE = 15;
+    public static final String ARTICLE_CLASS_ID = "articleClassId";
+    public static final String UNAVAILABLE = "unavailable";
+    public static final String AVAILABLE ="available";
 }

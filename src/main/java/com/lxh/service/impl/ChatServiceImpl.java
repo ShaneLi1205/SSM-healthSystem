@@ -28,11 +28,15 @@ public class ChatServiceImpl implements ChatService {
      * 进入聊天界面，获得聊天记录
      *
      * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * 用户获得信息时，chatSender为1，需要标记工作者发送的信息为已读
+     * 工作者获得信息时，chatSender为0，需要标记用户发送的信息为已读
      * @return 聊天记录的list
      */
     @Override
     public ArrayList<ChatData> listChatData(Map<String, Integer> map) {
-        return chatMapper.listChatData(map);
+        ArrayList<ChatData> chatData = chatMapper.listChatData(map);
+        chatMapper.updateChatDataRead(map);
+        return chatData;
     }
 
     /**
@@ -45,7 +49,9 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public ArrayList<ChatData> listNewChatData(Map<String, Integer> map) {
-        return chatMapper.listNewChatData(map);
+        ArrayList<ChatData> chatData = chatMapper.listNewChatData(map);
+        chatMapper.updateChatDataRead(map);
+        return chatData;
     }
 
     /**
@@ -57,7 +63,9 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public ArrayList<ChatData> listNewChatDataByUser(Map<String, Integer> map) {
-        return chatMapper.listNewChatDataByUser(map);
+        ArrayList<ChatData> chatData = chatMapper.listNewChatDataByUser(map);
+        chatMapper.updateChatDataReadByUser(map);
+        return chatData;
     }
 
     /**
@@ -69,32 +77,12 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public ArrayList<ChatData> listNewChatDataByWorker(Map<String, Integer> map) {
-        return chatMapper.listNewChatDataByWorker(map);
+        ArrayList<ChatData> chatData = chatMapper.listNewChatDataByWorker(map);
+        chatMapper.updateChatDataReadByWorker(map);
+        return chatData;
     }
 
-    /**
-     * 在聊天窗口，用户获得新消息后，标记已读
-     * 进入聊天窗口时，读取全部信息，标记已读
-     *
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
-     * @return 影响行数
-     */
-    @Override
-    public int updateChatDataReadByUser(Map<String, Integer> map) {
-        return chatMapper.updateChatDataReadByUser(map);
-    }
 
-    /**
-     * 在聊天窗口，工作者获得新消息后，标记已读
-     * 进入聊天窗口，读取全部信息，标记已读
-     *
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
-     * @return 影响行数
-     */
-    @Override
-    public int updateChatDataReadByWorker(Map<String, Integer> map) {
-        return chatMapper.updateChatDataReadByWorker(map);
-    }
 
     /**
      * 用户（chatSender=0）或工作者（chatSender=1）发送信息

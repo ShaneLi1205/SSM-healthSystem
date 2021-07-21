@@ -4,6 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lxh.dao.UserMapper">
+    <select id="getUser" resultType="user">
+        select user_id,user_name,user_sex from h_user where user_account = #{userAccount} and user_password=md5(#{userPassword});
+    </select>
     <select id="listAllUser" resultType="user">
         select user_id,user_name from h_user
     </select>
@@ -13,6 +16,17 @@
     <insert id="saveNewUser" parameterType="user">
         INSERT INTO h_user VALUES(null,#{userAccount},md5(#{userPassword}),#{userName},#{userSex},#{userRegisterTime})
     </insert>
+    <select id="checkUserAccountAndName" resultType="user">
+        select user_id from h_user
+        <where>
+            <if test="account != null">
+                user_account = #{account}
+            </if>
+            <if test="username != null">
+                or  user_name = #{username}
+            </if>
+        </where>
+    </select>
     <select id="getUserAccount" parameterType="String">
         select user_id from h_user where user_account = #{checkAccount}
     </select>
@@ -23,9 +37,10 @@
         insert into user_favorites values (null,#{userId},#{articleId})
     </insert>
     <select id="listUserFavorites" parameterType="int" resultType="userFavorites">
-        select user_favorites_id,user_id,article_id
-        from user_favorites
-        where user_id = #{userId}
+        SELECT user_favorites.`article_id`,article_title
+        FROM user_favorites INNER  JOIN  article_info
+             ON user_id = #{useId} AND user_favorites.`article_id` = article_info .`article_id`
+
     </select>
     <delete id="deleteUserFavorites" parameterType="map">
         delete from user_favorites

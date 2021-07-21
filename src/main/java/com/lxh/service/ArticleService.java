@@ -2,6 +2,9 @@ package com.lxh.service;
 
 import com.lxh.pojo.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +14,7 @@ import java.util.Map;
  * @Date: 2021/7/18 16:16
  */
 @Service
+
 public interface ArticleService {
 
     /**

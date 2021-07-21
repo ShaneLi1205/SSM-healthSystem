@@ -2,6 +2,8 @@ package com.lxh.service;
 
 import com.lxh.pojo.ChatData;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.Map;
  * @Date: 2021/7/18 12:17
  */
 @Service
+@Transactional(propagation = Propagation.NESTED, timeout = 1000, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+
 public interface ChatService {
     /**
      * 进入聊天界面，获得聊天记录
@@ -44,22 +48,6 @@ public interface ChatService {
      * @return 聊天信息的list
      */
     ArrayList<ChatData> listNewChatDataByWorker(Map<String,Integer> map);
-
-    /**
-     * 在聊天窗口，用户获得新消息后，标记已读
-     * 进入聊天窗口时，读取全部信息，标记已读
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
-     * @return 影响行数
-     */
-    int updateChatDataReadByUser(Map<String,Integer> map);
-
-    /**
-     * 在聊天窗口，工作者获得新消息后，标记已读
-     * 进入聊天窗口，读取全部信息，标记已读
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
-     * @return 影响行数
-     */
-    int updateChatDataReadByWorker(Map<String,Integer> map);
 
     /**
      * 用户（chatSender=0）或工作者（chatSender=1）发送信息

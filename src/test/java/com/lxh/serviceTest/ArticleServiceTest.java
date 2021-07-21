@@ -1,10 +1,10 @@
 package com.lxh.serviceTest;
 
-import com.alibaba.druid.sql.visitor.functions.Concat;
+import com.lxh.pojo.ArticleClass;
 import com.lxh.pojo.ArticleComment;
 import com.lxh.pojo.ArticleInfo;
 import com.lxh.service.ArticleService;
-import com.lxh.utils.Constant;
+import com.lxh.bean.Constant;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -32,6 +32,12 @@ public class ArticleServiceTest {
         map.put(Constant.ARTICLE_ID,1);
         for (ArticleComment articleComment : articleServiceImpl.listArticleComment(map)) {
             System.out.println(articleComment);
+        }
+    }
+    @Test
+    public void listArticleClass(){
+        for (ArticleClass articleClass : articleServiceImpl.listAllArticleClass()) {
+            System.out.println(articleClass);
         }
     }
     @Test

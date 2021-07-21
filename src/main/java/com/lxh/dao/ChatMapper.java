@@ -20,7 +20,7 @@ public interface ChatMapper {
 
     /**
      * 在聊天窗口，用户实时获得新信息
-     * 仅获得用户者（chatSender=0）或工作者（chatSender=1）发送的新消息
+     * 仅获得用户（chatSender=0）或工作者（chatSender=1）发送的新消息
      * 用户要获得工作者的信息，工作者要获得用户的信息
      *  @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
      *  @return 聊天记录的list
@@ -68,6 +68,7 @@ public interface ChatMapper {
      * @return 影响行数
      */
     int updateChatDataReadByWorker(Map<String,Integer> map);
+
 
     /**
      * 用户（chatSender=0）或工作者（chatSender=1）发送信息
