@@ -52,4 +52,8 @@ public class ArticleServiceTest {
     public void getSingleArticle(){
         System.out.println(articleServiceImpl.getArticleById(1));
     }
+    @Test
+    public void deleteArticle(){
+        System.out.println(articleServiceImpl.deleteArticleInfo(20));
+    }
 }

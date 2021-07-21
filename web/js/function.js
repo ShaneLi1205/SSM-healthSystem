@@ -1046,7 +1046,7 @@ function deleteArticle(articleId){
     var msg = "您确定要删除文章吗？\n\n请注意，删除操作不可逆！";
     if (confirm(msg)==true){
         $.ajax({
-            url : projectURL+"/Action?method=deleteArticle",
+            url : projectURL+"/deleteArticle",
             type : "POST",
             data : {
                'articleId':articleId
@@ -1055,7 +1055,7 @@ function deleteArticle(articleId){
             success : function(data){
                 if (data.flag == true){
                     alert(data.message)
-                    window.location.href=projectURL;
+                    window.location.href="/index.jsp";
                 } else {
                     alert(data.message);
                 }

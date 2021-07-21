@@ -254,9 +254,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public boolean deleteArticleInfo(int articleId) {
 
-        return articleMapper.deleteArticleFavorites(articleId) >= 1
-                && articleMapper.deleteArticleLikes(articleId) >= 1
-                && articleMapper.deleteArticleComment(articleId) >= 1
+        return articleMapper.deleteArticleFavorites(articleId) >= 0
+                && articleMapper.deleteArticleLikes(articleId) >= 0
+                && articleMapper.deleteArticleComment(articleId) >= 0
                 && articleMapper.deleteArticle(articleId) == 1;
     }
 

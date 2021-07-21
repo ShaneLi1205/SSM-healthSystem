@@ -3,6 +3,9 @@ package com.lxh.controller;
 import com.alibaba.fastjson.JSON;
 import com.lxh.bean.Constant;
 import com.lxh.pojo.ChatData;
+import com.lxh.service.AdminService;
+import com.lxh.service.UserService;
+import com.lxh.service.WorkerService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +23,15 @@ import java.util.ArrayList;
 @RestController
 public class ActionController {
 
+    private AdminService adminService;
+    private UserService userService;
+    private WorkerService workerService;
+
+    public ActionController(AdminService adminService, UserService userService, WorkerService workerService) {
+        this.adminService = adminService;
+        this.userService = userService;
+        this.workerService = workerService;
+    }
 
     @RequestMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response){

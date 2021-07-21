@@ -9,7 +9,6 @@ import com.lxh.pojo.ArticleClass;
 import com.lxh.pojo.ArticleComment;
 import com.lxh.pojo.ArticleInfo;
 import com.lxh.service.ArticleService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -55,9 +52,9 @@ public class ArticleController {
         String jsonStr;
         //获取页码和文章类型相关参数
         //当前页码，默认第一页
-        Integer defaultPageNum = 1;
+        int defaultPageNum = 1;
         //页面分类，默认全部
-        Integer defaultClassId = 0;
+        int defaultClassId = 0;
 
         if(pageNum != null){
             defaultPageNum = pageNum;
@@ -83,8 +80,8 @@ public class ArticleController {
 
     @RequestMapping("/getTotalPageNumByClassId")
     @ResponseBody
-    public String getTotalPageNumByClassId(Integer classId) throws IOException {
-        Integer defaultClassId = 0;
+    public String getTotalPageNumByClassId(Integer classId) {
+        int defaultClassId = 0;
         if (classId != null){
             defaultClassId = classId;
         }
@@ -92,7 +89,7 @@ public class ArticleController {
     }
 
     @RequestMapping("/getArticleDetail/{articleId}/{commentPageNum}")
-    public void getArticleDetail(@PathVariable Integer articleId,@PathVariable Integer commentPageNum, HttpServletRequest request, HttpServletResponse response){
+    public String getArticleDetail(@PathVariable Integer articleId,@PathVariable Integer commentPageNum, HttpServletRequest request, HttpServletResponse response){
         //获得文章Id和评论页码参数
         int defaultArticleId = 1;
         int defaultCommentPageNum = 1;
@@ -125,12 +122,17 @@ public class ArticleController {
         request.removeAttribute(Constant.ARTICLE_INFO_OBJ);
         request.setAttribute(Constant.ARTICLE_INFO_OBJ,articleInfo);
         request.setAttribute(Constant.ARTICLE_COMMENT_LIST,articleCommentArrayList);
-        try {
-            request.getRequestDispatcher("/ArticleDetail.jsp").forward(request,response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        return "forward:/ArticleDetail.jsp";
+    }
+    @RequestMapping("/deleteArticle")
+    @ResponseBody
+    public String deleteArticle(int articleId) {
+        String jsonStr;
+        if (articleService.deleteArticleInfo(articleId)) {
+            jsonStr = JSON.toJSONString(new ResultInfo<>(true, StatusCode.DELETE_SUCCESS.getMessage()));
+        } else {
+            jsonStr = JSON.toJSONString(new ResultInfo<>(false, StatusCode.DELETE_FAIL.getMessage()));
         }
+        return jsonStr;
     }
 }
