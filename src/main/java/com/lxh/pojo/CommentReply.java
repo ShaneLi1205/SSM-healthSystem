@@ -14,9 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentReply {
     private int commentReplyId;
-    private int useId;
+    private int userId;
     private int workerId;
     private int articleCommentId;
     private String commentReplyContent;
     private String userName;
+
+
 }

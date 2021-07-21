@@ -12,7 +12,7 @@
             GetAllChatData(${userId},${workerId},${ID})
         }
     }
-    window.setInterval(getNewChatData,1000);
+    window.setInterval(listNewChatData,1000);
 </script>
 <input type="hidden" name= "userId" id= "cuserId" value="${userId}" >
 <input type="hidden" name="workerId" id="cworkerId" value="${workerId}">

@@ -29,20 +29,26 @@ public class ChatServiceTest {
     }
     @Test
     public void listChatTest(){
-        Map<String,Integer > map = new HashMap<>();
-        map.put(Constant.WORKER_ID,1);
-        map.put(Constant.USER_ID,1);
-        for (ChatData listChatDatum : chatServiceImpl.listChatData(map)) {
+//        Map<String,Integer > map = new HashMap<>();
+//        map.put(Constant.WORKER_ID,1);
+//        map.put(Constant.USER_ID,1);
+        ChatData chatData = new ChatData();
+        chatData.setUserId(1);
+        chatData.setWorkerId(1);
+        for (ChatData listChatDatum : chatServiceImpl.listChatData(chatData)) {
             System.out.println(listChatDatum);
         }
     }
     @Test
     public void listNewChatTest(){
-        Map<String,Integer> map = new HashMap<>();
-        map.put(Constant.WORKER_ID,1);
-        map.put(Constant.USER_ID,1);
-        map.put(Constant.CHAT_SENDER,0);
-        for (ChatData listChatDatum : chatServiceImpl.listNewChatData(map)) {
+//        Map<String,Integer> map = new HashMap<>();
+//        map.put(Constant.WORKER_ID,1);
+//        map.put(Constant.USER_ID,1);
+//        map.put(Constant.CHAT_SENDER,0);
+        ChatData chatData = new ChatData();
+        chatData.setUserId(1);
+        chatData.setWorkerId(1);
+        for (ChatData listChatDatum : chatServiceImpl.listNewChatData(chatData)) {
             System.out.println(listChatDatum);
         }
     }

@@ -49,7 +49,11 @@ public enum StatusCode {
     BAN_FAIL("BanSuccess","封禁或解封失败"),
     PARAMETER_ERROR("parameterError","参数错误"),
     UNAVAILABLE ("unavailable","账号或用户名重复"),
-    AVAILABLE("available","当前输入可用");
+    AVAILABLE("available","当前输入可用"),
+    ACTION_SUCCESS("actionSuccess","操作成功"),
+    ACTION_FAIL("actionFail","操作失败");
+
+
 
     private String code;
     private String message;

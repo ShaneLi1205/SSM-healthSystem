@@ -1,23 +1,17 @@
 package com.lxh.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.lxh.bean.Constant;
 import com.lxh.bean.ResultInfo;
 import com.lxh.bean.StatusCode;
 import com.lxh.pojo.ArticleInfo;
-import com.lxh.pojo.User;
 import com.lxh.pojo.Worker;
 import com.lxh.service.ArticleService;
 import com.lxh.service.WorkerService;
-import com.lxh.service.impl.ArticleServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,36 +20,14 @@ import java.util.Date;
  * @Date: 2021/7/21 9:28
  */
 @RestController
-public class WorkerController {
+public class MidAuthorityController {
 
     private WorkerService workerService;
     private ArticleService articleService;
 
-    public WorkerController(@Qualifier("workerServiceImpl") WorkerService workerService, @Qualifier("articleServiceImpl") ArticleService articleService) {
+    public MidAuthorityController(@Qualifier("workerServiceImpl") WorkerService workerService, @Qualifier("articleServiceImpl") ArticleService articleService) {
         this.workerService = workerService;
         this.articleService = articleService;
-    }
-
-
-
-    /**
-     * 工作者登录
-     * @param worker 工作者信息
-     * @param request 请求
-     * @return 登录状态
-     */
-    @RequestMapping("/workerLogin")
-    public String workerLogin(Worker worker, HttpServletRequest request){
-        Worker workerInfo = workerService.getWorker(worker);
-        ResultInfo<Object> resultInfo;
-        if (workerInfo != null){
-            request.getSession().setAttribute(Constant.WORKER_SESSION, request.getSession().getId());
-            request.getSession().setAttribute(Constant.WORKER_OBJ, workerInfo);
-            resultInfo = new ResultInfo<>(true, StatusCode.LOGIN_SUCCESS.getMessage());
-        } else {
-            resultInfo = new ResultInfo<>(false,StatusCode.LOGIN_FAIL.getMessage());
-        }
-        return JSONObject.toJSONString(resultInfo);
     }
 
     /**
@@ -78,6 +50,11 @@ public class WorkerController {
         return jsonStr;
     }
 
+    /**
+     * 工作者发布文章
+     * @param articleInfo 发布的文章信息
+     * @return 成功与否
+     */
     @RequestMapping("/releaseArticle")
     public String releaseArticle(ArticleInfo articleInfo){
         String jsonStr;

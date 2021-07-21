@@ -53,17 +53,17 @@ public interface UserMapper {
 
     /**
      * 用户收藏文章
-     * @param map 包括文章Id（articleId）和用户ID（userId）
+     * @param userFavorites 包括文章Id（articleId）和用户ID（userId）
      * @return 影响行数
      */
-    int saveUserFavorites(Map<String,Integer> map);
+    int saveUserFavorites(UserFavorites userFavorites);
 
     /**
      * 用户取消收藏文章
-     * @param map 包括文章Id（articleId）和用户ID（userId）
+     * @param userFavorites 包括文章Id（articleId）和用户ID（userId）
      * @return 影响行数
      */
-    int deleteUserFavorites(Map<String,Integer> map);
+    int deleteUserFavorites(UserFavorites userFavorites);
 
     /**
      * 用户获得收藏夹的信息
@@ -81,8 +81,8 @@ public interface UserMapper {
 
     /**
      * 检查用户是否收藏
-     * @param map 包括文章Id（articleId）和用户ID（userId）
+     * @param userFavorites 包括文章Id（articleId）和用户ID（userId）
      * @return 得到的收藏信息
      */
-    UserFavorites getUserIsFavourites(Map<String,Integer> map);
+    UserFavorites getUserIsFavourites(UserFavorites userFavorites);
 }

@@ -39,14 +39,14 @@
 <body onload="javascript:articleDetailInitA()">
 <input type="hidden" id="likeMark" value="0">
 <input type="hidden" id="starMark" value="0">
-    <a href="javascript:void(0);" onclick="goTop()"><img src="WebImage/top.png" title="回到顶部" class="right-toTop"></a>
+    <a href="javascript:void(0);" onclick="goTop()"><img src="${pageContext.request.contextPath}/WebImage/top.png" title="回到顶部" class="right-toTop"></a>
     <c:if test="${adminObj == null && workerObj == null}">
-        <a href="javascript:void(0);" onclick="userLikeArticle()"><img id="likeImage" src="WebImage/like.png"  title="点赞" class="right-like" ></a>
-        <a href="javascript:void(0);" onclick="userFavorites()"><img id="starImage" src="WebImage/star.png" title="收藏" class="right-star"></a>
-        <a href="javascript:OpenCommunication('${userObj.userId}','${articleInfoObj.workerId}',${ID})"><img src="WebImage/consult.png" title="咨询发布者" class="right-consult" ></a>
+        <a href="javascript:void(0);" onclick="userLikeArticle()"><img id="likeImage" src="${pageContext.request.contextPath}/WebImage/like.png"  title="点赞" class="right-like" ></a>
+        <a href="javascript:void(0);" onclick="userFavorites()"><img id="starImage" src="${pageContext.request.contextPath}/WebImage/star.png" title="收藏" class="right-star"></a>
+        <a href="javascript:OpenCommunication('${userObj.userId}','${articleInfoObj.workerId}',${ID})"><img src="${pageContext.request.contextPath}/WebImage/consult.png" title="咨询发布者" class="right-consult" ></a>
     </c:if>
-    <a href="javascript:void(0);" onclick="openFrame('report')"><img src="WebImage/report.png" title="举报" class="right-report" href="#bottom"></a>
-    <a href="javascript:void(0);" onclick="goBottom()"><img src="WebImage/bottom.png" title="回到底部" class="right-toBottom" href="#bottom"></a>
+    <a href="javascript:void(0);" onclick="openFrame('report')"><img src="${pageContext.request.contextPath}/WebImage/report.png" title="举报" class="right-report" href="#bottom"></a>
+    <a href="javascript:void(0);" onclick="goBottom()"><img src="${pageContext.request.contextPath}/WebImage/bottom.png" title="回到底部" class="right-toBottom" href="#bottom"></a>
 <%--文章主体内容--%>
 <div class="container">
     <div class="center">

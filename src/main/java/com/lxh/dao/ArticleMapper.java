@@ -52,22 +52,22 @@ public interface ArticleMapper {
 
     /**
      * 用户对文章点赞(article_like表)
-     * @param map 保存参数
+     * @param articleLike 保存参数
      * articleId 文章ID
      * userId 用户ID
      * @return 影响行数
      */
-    int saveNewArticleLike(Map<String,Integer> map);
+    int saveNewArticleLike(ArticleLike articleLike);
 
     /**
      * 用户取消对文章点赞(article_like表)
-     * @param map 保存参数
+     * @param articleLike 保存参数
      * articleId 文章ID
      * userId 用户ID
      * @return 影响行数
      */
 
-    int deleteArticleLike(Map<String,Integer> map);
+    int deleteArticleLike(ArticleLike articleLike);
 
     /**
      * 用户对文章点赞(article_info表),增加info表的点赞数
@@ -81,7 +81,7 @@ public interface ArticleMapper {
      * @param articleId 文章ID
      * @return 影响行数
      */
-    int deleteArticleLikeInfo(int articleId);
+    int updateArticleLikeInfo(int articleId);
 
     /**
      * 用户对文章进行评论
@@ -149,12 +149,12 @@ public interface ArticleMapper {
 
     /**
      * 检查用户是否点赞
-     * @param map 保存参数
+     * @param articleLike 保存参数
      * articleId 文章Id
      * userID 用户Id
      * @return 点赞信息
      */
-    ArticleLike getArticleLike(Map<String,Integer> map);
+    ArticleLike getArticleLike(ArticleLike articleLike);
 
     /**
      * 删除文章
@@ -234,7 +234,7 @@ public interface ArticleMapper {
      *  commentReplyContent 回复的内容
      * @return 影响行数，用于判断保存是否成功
      */
-    int saveCommentReply (CommentReply commentReply);
+    int saveCommentReply(CommentReply commentReply);
 
     /**
      * 删除文章回复

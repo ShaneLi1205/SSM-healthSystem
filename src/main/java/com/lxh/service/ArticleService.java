@@ -18,22 +18,26 @@ import java.util.Map;
 public interface ArticleService {
 
     /**
+     * 用户点赞或取消点赞
+     */
+    boolean saveUserLikeChange(ArticleLike articleLike);
+    /**
      * 用户点赞操作
-     * @param map 参数
+     * @param articleLike 参数
      * userId    点赞的用户ID
      * articleId 点赞的文章ID
      * @return 点赞成功与否
      */
-    boolean addArticleLike(Map<String,Integer> map);
+    boolean addArticleLike(ArticleLike articleLike);
 
     /**
      * 用户取消点赞操作
-     * @param map 参数
+     * @param articleLike 参数
      * userId    点赞的用户ID
      * articleId 点赞的文章ID
      * @return 取消点赞成功与否
      */
-    boolean removeArticleLike(Map<String,Integer> map);
+    boolean deleteArticleLike(ArticleLike articleLike);
     /**
      * 获得页码内的文章的基本信息
      * @param pageNum 页码
@@ -128,12 +132,12 @@ public interface ArticleService {
 
     /**
      * 检查用户是否点赞
-     * @param map 保存参数
+     * @param articleLike 保存参数
      * articleId 文章Id
      * userID 用户Id
      * @return 点赞信息
      */
-    boolean getArticleLike(Map<String,Integer> map);
+    boolean getArticleLike(ArticleLike articleLike);
 
 
     /**

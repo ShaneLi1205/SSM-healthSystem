@@ -26,7 +26,7 @@
     <select id="getWorkerBanTime" parameterType="int" resultType="worker">
         select worker_id,worker_ban_time from h_worker where worker_id = #{workerId}
     </select>
-    <update id="saveWorkerBanTime" parameterType="String">
+    <update id="saveWorkerBanTime" parameterType="map">
         update h_worker set worker_ban_time = #{workerBanTime} where worker_id = #{workerId}
     </update>
 </mapper>

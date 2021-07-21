@@ -148,7 +148,7 @@ function CheckItem(obj){
                 isAvailable = false;
             } else {
                 $.ajax({
-                    url : projectURL+"/Action?method=checkArticleClassName",
+                    url : projectURL+"/checkArticleClassName",
                     type : "POST",
                     data : {
                         'articleClassName':$("#saveClassText").val()
@@ -208,7 +208,7 @@ function isLike(){
     var userId = $("#userId").val();
     var articleId = $("#articleId").val();
     $.ajax({
-        url : projectURL+"/Action?method=checkLike",
+        url : projectURL+"/checkLike",
         type : "POST",
         data : {
             'articleId':articleId,
@@ -237,7 +237,7 @@ function isFavorites(){
     var userId = $("#userId").val();
     var articleId = $("#articleId").val();
     $.ajax({
-        url : projectURL+"/Action?method=checkFavorites",
+        url : projectURL+"/checkFavorites",
         type : "POST",
         data : {
             'articleId':articleId,
@@ -286,12 +286,12 @@ function userLikeArticle(){
         if (likeMark == '0'){
             //未点赞则点赞
             $.ajax({
-                url : projectURL+"/Action?method=userLike",
+                url : projectURL+"/userLike",
                 type : "POST",
                 data : {
                     'articleId':articleId,
                     'userId':userId,
-                    'likeMethod':likeMark
+                    'articleLikeId':likeMark
                 },
                 dataType : "json",
                 success : function(data){
@@ -307,12 +307,12 @@ function userLikeArticle(){
         } else {
             //已点赞取消点赞
             $.ajax({
-                url : projectURL+"/Action?method=userLike",
+                url : projectURL+"/userLike",
                 type : "POST",
                 data : {
                     'articleId':articleId,
                     'userId':userId,
-                    'likeMethod':likeMark
+                    'articleLikeId':likeMark
                 },
                 dataType : "json",
                 success : function(data){
@@ -343,12 +343,12 @@ function userFavorites() {
         if (starMark == '0') {
             //未收藏则收藏
             $.ajax({
-                url: projectURL+"/Action?method=userChangeFavorites",
+                url: projectURL+"/userFavorites",
                 type: "POST",
                 data: {
                     'articleId': articleId,
                     'userId': userId,
-                    'favoritesMethod': starMark
+                    'userFavoritesId': starMark
                 },
                 dataType: "json",
                 success: function (data) {
@@ -364,12 +364,12 @@ function userFavorites() {
         } else {
             //已收藏则取消收藏
             $.ajax({
-                url: projectURL+"/Action?method=userChangeFavorites",
+                url: projectURL+"/userFavorites",
                 type: "POST",
                 data: {
                     'articleId': articleId,
                     'userId': userId,
-                    'favoritesMethod': starMark
+                    'userFavoritesId': starMark
                 },
                 dataType: "json",
                 success: function (data) {
@@ -400,12 +400,12 @@ function userComment(){
         alert('评论过长');
     } else {
         $.ajax({
-            url: projectURL+"/Action?method=userComment",
+            url: projectURL+"/userComment",
             type: "POST",
             data: {
                 'articleId': articleId,
                 'userId': userId,
-                'articleComment': comment
+                'articleCommentContent': comment
             },
             dataType: "json",
             success: function (data) {
@@ -684,27 +684,30 @@ function workerGetChatData(){
 /**
  * 在聊天界面获得新消息
  */
-function getNewChatData(){
+function listNewChatData(){
     var userId = $("#cuserId").val();
     var workerId = $("#cworkerId").val();
     var ID = $("#cloginID").val();
+    var charSender;
     var method = false;
     if(ID == '0'){
         method = false;
         var leftAva = workerAva;
         var rightAva = userAva;
+        charSender = 1;
     } else {
         method = true;
         var leftAva = userAva;
         var rightAva = workerAva;
+        charSender = 0;
     }
     $.ajax({
-        url : projectURL+"/Action?method=getNewChatData"+"&"+new Date().getTime(),
+        url : projectURL+"/listNewChatData"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'userId':userId,
             'workerId':workerId,
-            'ID':ID,
+            'chatSender':charSender
         },
         dataType : "json",
         success : function(data){
@@ -779,16 +782,23 @@ function workerGetNewChatData(){
  * 打开聊天页面
  */
 function OpenCommunication(UserId,WorkerId,ID){
+    var charSender
+    if (ID == '0'){
+        charSender = 1;
+    } else {
+        charSender = 0;
+    }
     if (UserId == ''){
         openLogin();
     } else {
         $.ajax({
-            url : projectURL+"/Action?method=getChatData"+"&"+new Date().getTime(),
+            url : projectURL+"/listChatData"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'userId':UserId,
                 'workerId':WorkerId,
-                'ID':ID,
+                'chatSender': charSender,
+                'ID':ID
             },
             dataType : "json",
             success : function(data){
@@ -805,23 +815,26 @@ function OpenCommunication(UserId,WorkerId,ID){
  */
 function GetAllChatData(userId,workerId,ID){
     var method = false;
+    var charSender;
     if(ID == '0'){
         method = false;
         var leftAva = workerAva;
         var rightAva = userAva;
+        charSender = 1;
     } else {
         method = true;
         var leftAva = userAva;
         var rightAva = workerAva;
+        charSender = 0;
     }
     $(document).ready(
         $.ajax({
-            url : projectURL+"/Action?method=getChatData"+"&"+new Date().getTime(),
+            url : projectURL+"/listChatData"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'userId':userId,
                 'workerId':workerId,
-                'ID':ID,
+                'chatSender':charSender
             },
             dataType : "json",
             success : function(data){
@@ -962,12 +975,12 @@ function SendMsg(userId,workerId,ID)
     } else {
         var formatContent = SendMsgDispose(text.value)
         $.ajax({
-            url : projectURL+"/Action?method=sendMessage",
+            url : projectURL+"/sendMessage",
             type : "POST",
             data : {
                 'userId':userId,
                 'workerId':workerId,
-                'ID':ID,
+                'chatSender':ID,
                 'chatContent':formatContent
             },
             dataType : "json",
@@ -1176,7 +1189,7 @@ function closeManage(){
 function getManageData(){
     var str
     $.ajax({
-        url : projectURL+"/Article?method=getArticleClassList"+"&"+new Date().getTime(),
+        url : projectURL+"/getArticleClass"+"?"+new Date().getTime(),
         type : "POST",
         dataType : "json",
         success : function(data){
@@ -1207,7 +1220,7 @@ function saveClass(){
     var className = $("#saveClassText").val();
     if (isAvailable){
         $.ajax({
-            url : projectURL+"/Action?method=saveArticleClass"+"&"+new Date().getTime(),
+            url : projectURL+"/saveArticleClass"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'articleClassName' : className
@@ -1242,7 +1255,7 @@ function closeSaveClass(){
 }
 function updateArticleClass(originalClassId,updateClassId){
     $.ajax({
-        url : projectURL+"/Action?method=updateArticleClass"+"&"+new Date().getTime(),
+        url : projectURL+"/updateArticleClass"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'originalClassId' : originalClassId,
@@ -1258,7 +1271,7 @@ function changeClass(){
     var originalClassId = $("#articleClassId").val();
     var updateClassId = $("#newClassId").val();
     $.ajax({
-        url : projectURL+"/Action?method=updateArticleClass",
+        url : projectURL+"/updateArticleClass",
         type : "POST",
         data : {
           'originalClassId' : originalClassId,
@@ -1283,7 +1296,7 @@ function showClassOption(articleClassId){
     document.getElementById("changeClass").style.display="";
     $("#articleClassId").val(articleClassId);
     $.ajax({
-        url : projectURL+"/Article?method=getArticleClassList",
+        url : projectURL+"/getArticleClass",
         type : "POST",
         dataType : "json",
         success : function(data){
@@ -1305,10 +1318,10 @@ function deleteArticleClass(classId,articleClassNum){
     } else {
         if (confirm(msg) == true){
             $.ajax({
-                url : projectURL+"/Action?method=deleteArticleClass"+"&"+new Date().getTime(),
+                url : projectURL+"/deleteArticleClass"+"?"+new Date().getTime(),
                 type : "POST",
                 data : {
-                    'classId' : classId
+                    'articleClassId' : classId
                 },
                 dataType : "json",
                 success : function(data){
@@ -1336,12 +1349,12 @@ function saveCommentReply(articleCommentId){
         alert('评论不能超过200字')
     } else {
         $.ajax({
-            url : projectURL+"/Action?method=saveCommentReply"+"&"+new Date().getTime(),
+            url : projectURL+"/saveCommentReply"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'userId' : $("#userId").val(),
                 'articleCommentId' : articleCommentId,
-                'articleCommentContent' : textContent
+                'commentReplyContent' : textContent
             },
             dataType : "json",
             success : function(data){
@@ -1367,7 +1380,7 @@ function deleteCommentAndReply(articleCommentId){
     if (confirm(msg) == true){
         var infoId = "commentDiv"+articleCommentId;
         $.ajax({
-            url : projectURL+"/Action?method=deleteArticleCommentAndReply"+"&"+new Date().getTime(),
+            url : projectURL+"/deleteCommentAndReply"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'articleCommentId' : articleCommentId
@@ -1391,10 +1404,10 @@ function deleteReply(replyId){
     if (confirm(msg) == true){
         var reply = "reply"+replyId;
         $.ajax({
-            url : projectURL+"/Action?method=deleteCommentReply"+"&"+new Date().getTime(),
+            url : projectURL+"/deleteCommentReply"+"?"+new Date().getTime(),
             type : "POST",
             data : {
-                'replyId' : replyId
+                'commentReplyId' : replyId
             },
             dataType : "json",
             success : function(data){
@@ -1427,7 +1440,7 @@ function closeFrame(Id){
 }
 function listReport(){
     $.ajax({
-        url : projectURL+"/Action?method=listReport",
+        url : projectURL+"/listReport",
         type : "POST",
         dataType : "json",
         success : function(data){
@@ -1474,7 +1487,7 @@ function deleteReport(reportId){
     var msg = "确认举报已处理吗？"
     if (confirm(msg) == true){
         $.ajax({
-            url : projectURL+"/Action?method=deleteReport"+"&"+new Date().getTime(),
+            url : projectURL+"/deleteReport"+"?"+new Date().getTime(),
             type : "POST",
             data : {
                 'reportId' : reportId
@@ -1496,7 +1509,7 @@ function saveReport(){
     var reportReason = $("#reportReason").val();
     var reportContent = UE.getEditor('editor').getContent();
     $.ajax({
-        url : projectURL+"/Action?method=saveReport"+"&"+new Date().getTime(),
+        url : projectURL+"/saveReport"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'userId' : userId,
@@ -1720,7 +1733,7 @@ function banWorkerOption(workerId){
 }
 function tipWorkerState(workerId){
     $.ajax({
-        url : projectURL+"/Action?method=getWorkerState"+"&"+new Date().getTime(),
+        url : projectURL+"/getWorkerState"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'workerId' : workerId
@@ -1729,7 +1742,6 @@ function tipWorkerState(workerId){
         success : function(data){
             var message = $("#markSpan").next('span');
             if (data.flag == true){
-
                 message.html("账号状态正常");
                 message.addClass('message');
             } else {
@@ -1743,7 +1755,7 @@ function tipWorkerState(workerId){
 function banWorker(banDays){
     var workerId = $("#banWorkerId").val()
     $.ajax({
-        url : projectURL+"/Action?method=saveBanWorker"+"&"+new Date().getTime(),
+        url : projectURL+"/saveBanWorker"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'workerId' : workerId,

@@ -27,16 +27,16 @@ public class ChatServiceImpl implements ChatService {
     /**
      * 进入聊天界面，获得聊天记录
      *
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      * 用户获得信息时，chatSender为1，需要标记工作者发送的信息为已读
      * 工作者获得信息时，chatSender为0，需要标记用户发送的信息为已读
      * @return 聊天记录的list
      */
     @Override
-    public ArrayList<ChatData> listChatData(Map<String, Integer> map) {
-        ArrayList<ChatData> chatData = chatMapper.listChatData(map);
-        chatMapper.updateChatDataRead(map);
-        return chatData;
+    public ArrayList<ChatData> listChatData(ChatData chatData) {
+        ArrayList<ChatData> chatDataArrayList = chatMapper.listChatData(chatData);
+        chatMapper.updateChatDataRead(chatData);
+        return chatDataArrayList;
     }
 
     /**
@@ -44,14 +44,14 @@ public class ChatServiceImpl implements ChatService {
      * 仅获得用户者（chatSender=0）或工作者（chatSender=1）发送的新消息
      * 用户要获得工作者的信息，工作者要获得用户的信息
      *
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      * @return 聊天记录的list
      */
     @Override
-    public ArrayList<ChatData> listNewChatData(Map<String, Integer> map) {
-        ArrayList<ChatData> chatData = chatMapper.listNewChatData(map);
-        chatMapper.updateChatDataRead(map);
-        return chatData;
+    public ArrayList<ChatData> listNewChatData(ChatData chatData) {
+        ArrayList<ChatData> chatDatalist = chatMapper.listNewChatData(chatData);
+        chatMapper.updateChatDataRead(chatData);
+        return chatDatalist;
     }
 
     /**
@@ -90,8 +90,8 @@ public class ChatServiceImpl implements ChatService {
      * @return 影响行数
      */
     @Override
-    public int saveNewChatData(ChatData chatData) {
-        return chatMapper.saveNewChatData(chatData);
+    public boolean saveNewChatData(ChatData chatData) {
+        return chatMapper.saveNewChatData(chatData) == 1;
     }
 
     /**

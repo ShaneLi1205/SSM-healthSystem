@@ -35,10 +35,10 @@ public class UserServiceTest {
     }
     @Test
     public void getUserFavoritesTest(){
-        Map<String,Integer> map = new HashMap<>();
-        map.put(Constant.USER_ID,1);
-        map.put(Constant.ARTICLE_ID,2);
-        System.out.println(userServiceImpl.getUserIsFavourites(map));
+//        Map<String,Integer> map = new HashMap<>();
+//        map.put(Constant.USER_ID,1);
+//        map.put(Constant.ARTICLE_ID,2);
+//        System.out.println(userServiceImpl.getUserIsFavourites(map));
     }
     @Test
     public void checkUser(){

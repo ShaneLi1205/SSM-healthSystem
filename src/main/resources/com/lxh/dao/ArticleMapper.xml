@@ -58,9 +58,9 @@
         UPDATE article_info SET article_like_num = article_like_num + 1 WHERE article_id = #{articleId}
     </update>
     <!---->
-    <delete id="deleteArticleLikeInfo" parameterType="int">
+    <update id="updateArticleLikeInfo" parameterType="int">
         UPDATE article_info SET article_like_num = article_like_num - 1 WHERE article_id = #{articleId}
-    </delete>
+    </update>
     <!---->
     <insert id="saveNewComment" parameterType="articleComment">
         INSERT INTO article_comment VALUES(null,#{articleId},#{articleCommentContent},#{userId},#{workerId},#{articleCommentTime})
@@ -146,7 +146,7 @@
         WHERE article_comment.`article_id` = #{articleId}
     </delete>
     <!---->
-    <insert id="saveNewArticleClass" parameterType="String">
+    <insert id="saveArticleClass" parameterType="String">
         INSERT INTO article_class VALUES (null,#{articleClassName})
     </insert>
     <!---->

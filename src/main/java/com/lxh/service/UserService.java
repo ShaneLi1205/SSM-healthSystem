@@ -58,18 +58,11 @@ public interface UserService {
     boolean getUserAccount(String checkAccount);
 
     /**
-     * 用户收藏文章
-     * @param map 包括文章Id（articleId）和用户ID（userId）
-     * @return 影响行数
+     * 用户收藏或取消收藏文章
+     * @param userFavorites 需要操作的信息
+     * @return 操作成功与否
      */
-    boolean saveUserFavorites(Map<String,Integer> map);
-
-    /**
-     * 用户取消收藏文章
-     * @param map 包括文章Id（articleId）和用户ID（userId）
-     * @return 影响行数
-     */
-    boolean deleteUserFavorites(Map<String,Integer> map);
+    boolean saveUserFavoritesChange(UserFavorites userFavorites);
 
     /**
      * 用户获得收藏夹的信息
@@ -87,8 +80,8 @@ public interface UserService {
 
     /**
      * 检查用户是否收藏
-     * @param map 包括文章Id（articleId）和用户ID（userId）
+     * @param userFavorites 包括文章Id（articleId）和用户ID（userId）
      * @return 得到的收藏信息
      */
-    boolean getUserIsFavourites(Map<String,Integer> map);
+    boolean getUserIsFavourites(UserFavorites userFavorites);
 }

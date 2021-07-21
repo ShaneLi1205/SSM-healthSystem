@@ -19,19 +19,19 @@ import java.util.Map;
 public interface ChatService {
     /**
      * 进入聊天界面，获得聊天记录
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      * @return 聊天记录的list
      */
-    ArrayList<ChatData> listChatData(Map<String,Integer> map);
+    ArrayList<ChatData> listChatData(ChatData chatData);
 
     /**
      * 在聊天窗口，用户实时获得新信息
      * 仅获得用户者（chatSender=0）或工作者（chatSender=1）发送的新消息
      * 用户要获得工作者的信息，工作者要获得用户的信息
-     *  @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     *  @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      *  @return 聊天记录的list
      */
-    ArrayList<ChatData> listNewChatData(Map<String,Integer> map);
+    ArrayList<ChatData> listNewChatData(ChatData chatData);
 
     /**
      * 在聊天窗口，用户实时获得新信息
@@ -54,7 +54,7 @@ public interface ChatService {
      * @param chatData 聊天的信息
      * @return 影响行数
      */
-    int saveNewChatData(ChatData chatData);
+    boolean saveNewChatData(ChatData chatData);
 
     /**
      * 工作者发送信息

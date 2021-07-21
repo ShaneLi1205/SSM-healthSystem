@@ -1,10 +1,7 @@
 package com.lxh.service.impl;
 
 import com.lxh.dao.ArticleMapper;
-import com.lxh.pojo.ArticleClass;
-import com.lxh.pojo.ArticleComment;
-import com.lxh.pojo.ArticleInfo;
-import com.lxh.pojo.CommentReply;
+import com.lxh.pojo.*;
 import com.lxh.service.ArticleService;
 import com.lxh.bean.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,29 +27,45 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     /**
+     * 用户点赞或取消点赞
+     *
+     * @param articleLike
+     */
+    @Override
+    public boolean saveUserLikeChange(ArticleLike articleLike) {
+        boolean result;
+        if (articleLike.getArticleLikeId() == 0){
+            result = this.addArticleLike(articleLike);
+        } else {
+            result = this.deleteArticleLike(articleLike);
+        }
+        return result;
+    }
+
+    /**
      * 用户点赞操作
-     * @param map 参数
+     * @param articleLike 参数
      * userId    点赞的用户ID
      * articleId 点赞的文章ID
      * @return 点赞成功与否
      */
     @Override
-    public boolean addArticleLike(Map<String,Integer> map) {
-        int articleId = map.get(Constant.ARTICLE_ID);
-        return articleMapper.saveArticleLikeInfo(articleId) ==1 && articleMapper.saveNewArticleLike(map) == 1;
+    public boolean addArticleLike(ArticleLike articleLike) {
+
+        return articleMapper.saveArticleLikeInfo(articleLike.getArticleId()) ==1 && articleMapper.saveNewArticleLike(articleLike) == 1;
     }
 
     /**
      * 用户取消点赞操作
-     * @param map 参数
+     * @param articleLike 参数
      * userId    点赞的用户ID
      * articleId 点赞的文章ID
      * @return 取消点赞成功与否
      */
     @Override
-    public boolean removeArticleLike(Map<String,Integer> map) {
-        int articleId = map.get(Constant.ARTICLE_ID);
-        return articleMapper.deleteArticleLikeInfo(articleId) ==1 && articleMapper.deleteArticleLike(map) == 1;
+    public boolean deleteArticleLike(ArticleLike articleLike) {
+
+        return articleMapper.updateArticleLikeInfo(articleLike.getArticleId()) ==1 && articleMapper.deleteArticleLike(articleLike) == 1;
 
     }
 
@@ -235,14 +248,14 @@ public class ArticleServiceImpl implements ArticleService {
     /**
      * 检查用户是否点赞
      *
-     * @param map 保存参数
+     * @param articleLike 保存参数
      *            articleId 文章Id
      *            userID 用户Id
      * @return 点赞信息
      */
     @Override
-    public boolean getArticleLike(Map<String, Integer> map) {
-        return articleMapper.getArticleLike(map) != null;
+    public boolean getArticleLike(ArticleLike articleLike) {
+        return articleMapper.getArticleLike(articleLike) != null;
     }
 
     /**
@@ -342,7 +355,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public boolean deleteCommentAndReply(int articleCommentId) {
-        return articleMapper.deleteCommentReplyByCommentId(articleCommentId) >=1 && articleMapper.deleteCommentByCommentId(articleCommentId) == 1;
+        return articleMapper.deleteCommentReplyByCommentId(articleCommentId) >=0 && articleMapper.deleteCommentByCommentId(articleCommentId) == 1;
     }
 
     /**

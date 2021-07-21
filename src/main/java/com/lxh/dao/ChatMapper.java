@@ -13,19 +13,19 @@ import java.util.Map;
 public interface ChatMapper {
     /**
      * 进入聊天界面，获得聊天记录
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      * @return 聊天记录的list
      */
-    ArrayList<ChatData> listChatData(Map<String,Integer> map);
+    ArrayList<ChatData> listChatData(ChatData chatData);
 
     /**
      * 在聊天窗口，用户实时获得新信息
      * 仅获得用户（chatSender=0）或工作者（chatSender=1）发送的新消息
      * 用户要获得工作者的信息，工作者要获得用户的信息
-     *  @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     *  @Param chatData 中获取聊天的工作者Id（workerId）和用户Id（userId）
      *  @return 聊天记录的list
      */
-    ArrayList<ChatData> listNewChatData(Map<String,Integer> map);
+    ArrayList<ChatData> listNewChatData(ChatData chatData);
 
     /**
      * 在聊天窗口，用户实时获得新信息
@@ -48,10 +48,10 @@ public interface ChatMapper {
      * 进入聊天窗口时，读取全部信息，标记已读
      * 用户者（chatSender=0） 工作者（chatSender=1）
      * 用户需要标记工作者发送的信息，工作者需要标记用户发送的信息
-     * @param map map中获取聊天的工作者Id（workerId）和用户Id（userId）
+     * @param chatData map中获取聊天的工作者Id（workerId）和用户Id（userId）
      * @return 影响行数
      */
-    int updateChatDataRead(Map<String,Integer> map);
+    int updateChatDataRead(ChatData chatData);
 
     /**
      * 在聊天窗口，用户获得新消息后，标记已读

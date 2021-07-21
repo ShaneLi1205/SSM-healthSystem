@@ -22,13 +22,6 @@ public class ChatController {
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
-    @RequestMapping("/showChatRelation")
-    public String showChatRelation(Integer userId,Integer workerId){
-        Map<String,Integer> map = new HashMap<>(2);
-        map.put(Constant.WORKER_ID,workerId);
-        map.put(Constant.USER_ID,userId);
-        System.out.println("userId"+userId+"  workerId"+workerId);
-        ArrayList<ChatData> chatDataArrayList = chatService.listChatRelation(map);
-        return JSON.toJSONString(chatDataArrayList);
-    }
+
+
 }

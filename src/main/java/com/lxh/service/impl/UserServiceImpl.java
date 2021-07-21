@@ -94,26 +94,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户收藏文章
+     * 用户收藏或取消收藏文章
      *
-     * @param map 包括文章Id（articleId）和用户ID（userId）
-     * @return 影响行数
+     * @param userFavorites 需要操作的信息
+     * @return 操作成功与否
      */
     @Override
-    public boolean saveUserFavorites(Map<String, Integer> map) {
-        return userMapper.saveUserFavorites(map) == 1;
+    public boolean saveUserFavoritesChange(UserFavorites userFavorites) {
+        int result;
+        if (userFavorites.getUserFavoritesId() == 0){
+            result = userMapper.saveUserFavorites(userFavorites);
+        } else {
+            result = userMapper.deleteUserFavorites(userFavorites);
+        }
+        return result == 1;
     }
 
-    /**
-     * 用户取消收藏文章
-     *
-     * @param map 包括文章Id（articleId）和用户ID（userId）
-     * @return 影响行数
-     */
-    @Override
-    public boolean deleteUserFavorites(Map<String, Integer> map) {
-        return userMapper.deleteUserFavorites(map) == 1;
-    }
 
     /**
      * 用户获得收藏夹的信息
@@ -140,11 +136,11 @@ public class UserServiceImpl implements UserService {
     /**
      * 检查用户是否收藏
      *
-     * @param map 包括文章Id（articleId）和用户ID（userId）
+     * @param userFavorites 包括文章Id（articleId）和用户ID（userId）
      * @return 得到的收藏信息
      */
     @Override
-    public boolean getUserIsFavourites(Map<String, Integer> map) {
-        return userMapper.getUserIsFavourites(map) != null;
+    public boolean getUserIsFavourites(UserFavorites userFavorites) {
+        return userMapper.getUserIsFavourites(userFavorites) != null;
     }
 }
