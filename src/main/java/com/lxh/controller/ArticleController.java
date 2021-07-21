@@ -9,9 +9,11 @@ import com.lxh.pojo.ArticleClass;
 import com.lxh.pojo.ArticleComment;
 import com.lxh.pojo.ArticleInfo;
 import com.lxh.service.ArticleService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,15 +42,15 @@ public class ArticleController {
 
     @RequestMapping("/getArticleClass")
     @ResponseBody
-    public String getArticleClass(){
+    public String getArticleClass(HttpServletRequest request){
         ArrayList<ArticleClass> articleClasses = articleService.listAllArticleClass();
-        String jsonString = JSONObject.toJSONString(articleClasses);
-        return jsonString;
+        request.getSession().setAttribute(Constant.ARTICLE_CLASS_LIST,articleClasses);
+        return JSONObject.toJSONString(articleClasses);
     }
 
     @RequestMapping("/getArticleList")
     @ResponseBody
-    public String getArticleList(Integer pageNum,Integer classId){
+    public String getArticleList(Integer pageNum, Integer classId){
 
         String jsonStr;
         //获取页码和文章类型相关参数
@@ -89,8 +91,8 @@ public class ArticleController {
         return JSONObject.toJSONString(new ResultInfo<>(true, StatusCode.SUCCESS.getMessage(),articleService.getTotalPageNum(defaultClassId)));
     }
 
-    @RequestMapping("/getArticleDetail")
-    public void getArticleDetail(Integer articleId, Integer commentPageNum, HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("/getArticleDetail/{articleId}/{commentPageNum}")
+    public void getArticleDetail(@PathVariable Integer articleId,@PathVariable Integer commentPageNum, HttpServletRequest request, HttpServletResponse response){
         //获得文章Id和评论页码参数
         int defaultArticleId = 1;
         int defaultCommentPageNum = 1;

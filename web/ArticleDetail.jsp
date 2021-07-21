@@ -127,10 +127,10 @@
                         <div id="paging_block">
                             <div class="pager" id="commentPageContainer">
                                 <span>当前${commentPageNum}/${commentTotalPageNum}页</span>
-                                <a href="${pageContext.request.contextPath}/Article?method=getArticleDetail&articleId=${articleInfoObj.articleId}&commentPageNum=1">首页</a>
-                                <a href="${pageContext.request.contextPath}/Article?method=getArticleDetail&articleId=${articleInfoObj.articleId}&commentPageNum=${commentPageNum - 1 < 1 ? 1:commentPageNum-1}">上一页</a>
-                                <a href="${pageContext.request.contextPath}/Article?method=getArticleDetail&articleId=${articleInfoObj.articleId}&commentPageNum=${commentPageNum + 1> commentTotalPageNum ? commentTotalPageNum : commentPageNum + 1}">下一页</a>
-                                <a href="${pageContext.request.contextPath}/Article?method=getArticleDetail&articleId=${articleInfoObj.articleId}&commentPageNum=${commentTotalPageNum}">尾页</a>
+                                <a href="${pageContext.request.contextPath}/getArticleDetail/${articleInfoObj.articleId}/1">首页</a>
+                                <a href="${pageContext.request.contextPath}/getArticleDetail/${articleInfoObj.articleId}/${commentPageNum - 1 < 1 ? 1:commentPageNum-1}">上一页</a>
+                                <a href="${pageContext.request.contextPath}/getArticleDetail/${articleInfoObj.articleId}/${commentPageNum + 1> commentTotalPageNum ? commentTotalPageNum : commentPageNum + 1}">下一页</a>
+                                <a href="${pageContext.request.contextPath}/getArticleDetail/${articleInfoObj.articleId}/${commentTotalPageNum}">尾页</a>
                             </div>
                         </div>
                     </div>

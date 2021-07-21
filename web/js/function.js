@@ -433,7 +433,7 @@ function workerReleaseArticle(){
         alert("标题长度超出");
     } else {
         $.ajax({
-            url : projectURL+"/Action?method=getWorkerState",
+            url : projectURL+"/getWorkerState",
             type : "POST",
             data : {
                 'workerId' : workerId
@@ -442,7 +442,7 @@ function workerReleaseArticle(){
             success : function(data){
                 if (data.flag == true){
                     $.ajax({
-                        url : projectURL+"/Action?method=workerReleaseArticle",
+                        url : projectURL+"/releaseArticle",
                         type : "POST",
                         cache: false,
                         async : false,
@@ -451,7 +451,7 @@ function workerReleaseArticle(){
                             'articleContent':articleContent,
                             'articleSummary':articleSummary,
                             'articleTitle':articleTitle,
-                            'classId':classId},
+                            'articleClassId':classId},
                         dataType : "json",
                         success : function(data){
                             if (data.flag == true){
@@ -905,7 +905,7 @@ function getFavorites(userId){
             if (data.length > 0){
                 for (var o in data){
                     str = "<div class=\"singleFavorites\">\n" +
-                        "            <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail&amp;articleId="+data[o].articleId+"&amp;commentPageNum=1\" target=\"_blank\">"+data[o].articleTitle+"</a>\n" +
+                        "            <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail/"+data[o].articleId+"/1\" target=\"_blank\">"+data[o].articleTitle+"</a>\n" +
                         "        </div>"
                     msgs.innerHTML = msgs.innerHTML + str;
                 }
@@ -1439,7 +1439,7 @@ function listReport(){
                 var str = "                        <article class=\"post-item\" >\n" +
                     "                            <section class=\"post-item-body\">\n" +
                     "                                <div class=\"post-item-text\">\n" +
-                    "                                    <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail&articleId="+data[o].articleId+"&commentPageNum=1\" target=\"_blank\">点击跳转到被举报文章："+data[o].articleTitle+"</a>\n" +
+                    "                                    <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail/"+data[o].articleId+"/1\" target=\"_blank\">点击跳转到被举报文章："+data[o].articleTitle+"</a>\n" +
 
                     "                                    <p class=\"post-item-summary\"> 举报原因：\n" +
                     data[o].reportReason+
@@ -1522,7 +1522,7 @@ function saveReport(){
 function showArticleComment(commentPageNum){
     var articleId = $("#articleId").val();
     $.ajax({
-        url : projectURL+"/Action?method=deleteReport"+"&"+new Date().getTime(),
+        url : projectURL+"/Action?method="+"&"+new Date().getTime(),
         type : "POST",
         data : {
             'articleId' : articleId,
@@ -1661,7 +1661,7 @@ function showList(data,id){
         var str = "                        <article class=\"post-item\" >\n" +
             "                            <section class=\"post-item-body\">\n" +
             "                                <div class=\"post-item-text\">\n" +
-            "                                    <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail?articleId="+data[o].articleId+"&commentPageNum=1\" target=\"_blank\">"+data[o].articleTitle+"</a>\n" +
+            "                                    <a class=\"post-item-title\" href=\""+projectURL+"/getArticleDetail/"+data[o].articleId+"/1\" target=\"_blank\">"+data[o].articleTitle+"</a>\n" +
             "                                    <p class=\"post-item-summary\">\n" +
             "                                        <a href=\"用户首页 头像\">\n" +
             "                                            <img src=\""+projectURL+"/Avator/CAT.png\"  width=\"40px\" height=\"40px\" class=\"avatar\" alt=\"博主头像\">\n" +
@@ -1696,7 +1696,7 @@ function showList(data,id){
 }
 function openReleasePage(workerId){
     $.ajax({
-        url : projectURL+"/Action?method=getWorkerState"+"&"+new Date().getTime(),
+        url : projectURL+"/getWorkerState"+"?"+new Date().getTime(),
         type : "POST",
         data : {
             'workerId' : workerId
@@ -1705,13 +1705,7 @@ function openReleasePage(workerId){
         success : function(data){
             if (data.flag == true){
                 location.href=projectURL+"/ArticleRelease.jsp"
-                $.ajax({
-                    url : projectURL+"/Article?method=GetArticleReleaseInfo"+"&"+new Date().getTime(),
-                    type : "POST",
-                    dataType : "json",
-                    success : function(data){
-                    }
-                })
+
             } else {
                 alert("账号被封禁至："+data.data);
             }

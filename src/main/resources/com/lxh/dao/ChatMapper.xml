@@ -81,14 +81,12 @@
         FROM (chat_data INNER JOIN h_user ON chat_data.`user_id`= h_user.`user_id` )
         INNER JOIN h_worker ON chat_data.`worker_id` = h_worker.`worker_id`
         <where>
-            <choose>
-                <when test="userId != null">
+                <if test="userId != 0">
                     chat_data.`user_id` = #{userId}
-                </when>
-                <otherwise>
+                </if>
+                <if test="workerId != 0">
                     chat_data.`worker_id` = #{workerId}
-                </otherwise>
-            </choose>
+                </if>
         </where>
     </select>
 </mapper>

@@ -45,6 +45,7 @@ public class UserController {
         }
         return JSONObject.toJSONString(resultInfo);
     }
+
     @RequestMapping("/userRegister")
     public String userRegister(User user,HttpServletRequest request){
         String jsonStr;
@@ -63,6 +64,7 @@ public class UserController {
         jsonStr = JSON.toJSONString(resultInfo);
         return jsonStr;
     }
+
     @RequestMapping("/registerCheck")
     public String registerCheck(String account, String username){
         ResultInfo<Object> resultInfo;
@@ -73,6 +75,7 @@ public class UserController {
         }
         return JSONObject.toJSONString(resultInfo);
     }
+
     @RequestMapping("/listUserFavorites")
     public String listUserFavorites(Integer userId){
         List<UserFavorites> userFavorites;

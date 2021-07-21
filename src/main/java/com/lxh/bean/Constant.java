@@ -54,4 +54,5 @@ public class Constant {
     public static final String ARTICLE_CLASS_ID = "articleClassId";
     public static final String UNAVAILABLE = "unavailable";
     public static final String AVAILABLE ="available";
+    public static final int ARTICLE_SUMMARY_LENGTH = 70;
 }

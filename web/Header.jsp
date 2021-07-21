@@ -121,13 +121,13 @@
             <c:if test="${workerObj != null}">
                 <span>${workerObj.workerName}</span>
 <%--                <a href="${pageContext.request.contextPath}/UserInfoMange.jsp">账号管理</a>--%>
-                <a href="${pageContext.request.contextPath}/Action?method=logout">退出登录</a>
+                <a href="${pageContext.request.contextPath}/logout">退出登录</a>
 
             </c:if>
             <c:if test="${adminObj != null}">
                 <span>${adminObj.adminName}</span>
                 <%--                <a href="${pageContext.request.contextPath}/UserInfoMange.jsp">账号管理</a>--%>
-                <a href="${pageContext.request.contextPath}/Action?method=logout">退出登录</a>
+                <a href="${pageContext.request.contextPath}/logout">退出登录</a>
             </c:if>
         </c:otherwise>
     </c:choose>

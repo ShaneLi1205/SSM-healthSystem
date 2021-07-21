@@ -15,7 +15,7 @@
         select worker_id,worker_name,worker_ban_time
         from h_worker
         where worker_account = #{workerAccount}
-          and worker_password = md5(#{workerAccount})
+          and worker_password = md5(#{workerPassword})
     </select>
     <select id="getWorkerAccount" parameterType="String" resultType="worker">
         select worker_id from h_worker where worker_account = #{checkAccount}
